@@ -3,7 +3,7 @@ DESTDIR ?=
 
 .DEFAULT_GOAL := help
 
-.PHONY: help install uninstall validate
+.PHONY: help install uninstall validate build clean
 
 help:
 	@echo "Available targets:"
@@ -39,3 +39,6 @@ validate:
 
 build:
 	@tools/build-local-package.sh
+
+clean:
+	rm -f packaging/arch/*.zst packaging/arch/*.tar.gz
