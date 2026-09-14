@@ -13,22 +13,17 @@ help:
 	@echo "  make validate"
 
 install:
-	install -dm755 "$(DESTDIR)$(PREFIX)/share/argvus/dunst"
-	cp -a src/dunst/. "$(DESTDIR)$(PREFIX)/share/argvus/dunst/"
-	if [ -d src/scripts ]; then \
-		install -dm755 "$(DESTDIR)$(PREFIX)/share/argvus/scripts"; \
-		cp -a src/scripts/. "$(DESTDIR)$(PREFIX)/share/argvus/scripts/"; \
-		find "$(DESTDIR)$(PREFIX)/share/argvus/scripts" -type f -name '*.sh' -exec chmod 755 {} \; ; \
-	fi
+	install -dm755 "$(DESTDIR)$(PREFIX)/share/argvus/notifications"
+	cp -a src/usr/share/argvus/notifications/. "$(DESTDIR)$(PREFIX)/share/argvus/notifications/"
+	find "$(DESTDIR)$(PREFIX)/share/argvus/notifications/sh" -type f -name '*.sh' -exec chmod 755 {} \;
 	install -Dm644 LICENSE "$(DESTDIR)$(PREFIX)/share/licenses/argvus-notifications/LICENSE"
 
 uninstall:
-	rm -rf "$(DESTDIR)$(PREFIX)/share/argvus/dunst"
-	rm -f "$(DESTDIR)$(PREFIX)/share/argvus/scripts/argvus/notify.sh"
+	rm -rf "$(DESTDIR)$(PREFIX)/share/argvus/notifications"
 	rm -f "$(DESTDIR)$(PREFIX)/share/licenses/argvus-notifications/LICENSE"
 
 validate:
-	@test -f src/dunst/dunstrc
+	@test -f src/usr/share/argvus/notifications/config/dunstrc
 	@if find src -name '*.sh' | grep -q .; then \
 		for script in $$(find src -name '*.sh'); do sh -n "$$script"; done; \
 		if command -v shellcheck >/dev/null 2>&1; then for script in $$(find src -name '*.sh'); do shellcheck -e SC1090 -e SC2034 "$$script"; done; else echo "shellcheck not found; skipping shell lint"; fi; \
