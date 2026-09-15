@@ -1,4 +1,6 @@
 # shellcheck shell=sh
+# shellcheck disable=SC1091
+. /usr/share/argvus/lib/i18n.sh
 
 # -- Notification abstraction (notify-send wrapper) ---------------------------
 
@@ -9,5 +11,5 @@ notify_send() {
 }
 
 notify_error() {
-  notify_send "Error: $1" "$2"
+  notify_send "$(argvus_tr notifications error_title): $1" "$2"
 }
