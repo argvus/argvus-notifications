@@ -49,6 +49,18 @@ set_dnd() {
   print_status
 }
 
+restore_dnd() {
+  value="$1"
+  case "$value" in
+    true|false) ;;
+    *) die 'DND value must be true or false' ;;
+  esac
+  have_dunstctl
+  # Restore only Dunst's pause bit. Do not rewrite state or theme files.
+  dunstctl set-paused "$value" >/dev/null 2>&1 || die 'failed to restore Dunst pause state'
+  print_status
+}
+
 toggle_dnd() {
   current="$(read_dnd)"
   if [ "$current" = true ]; then
@@ -75,12 +87,12 @@ case "$1" in
         if [ -r "$state_file" ]; then
           value="$(tr -d '[:space:]' <"$state_file")"
           case "$value" in
-            true) set_dnd true ;;
-            false) set_dnd false ;;
+            true) restore_dnd true ;;
+            false) restore_dnd false ;;
             *) die 'stored DND preference is invalid' ;;
           esac
         else
-          set_dnd false
+          restore_dnd false
         fi
         ;;
       *) usage >&2; exit 2 ;;
