@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+set -eu
+
+usage() {
+  printf '%s\n' \
+    'Usage: argvus-notifications status' \
+    '       argvus-notifications dnd status|on|off|toggle|restore'
+}
+
+die() {
+  printf 'argvus-notifications: %s\n' "$1" >&2
+  exit 1
+}
+
+have_dunstctl() {
+  command -v dunstctl >/dev/null 2>&1 || die 'dunstctl is not available'
+}
+
+read_dnd() {
+  have_dunstctl
+  value="$(dunstctl is-paused 2>/dev/null || true)"
+  case "$(printf '%s' "$value" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')" in
+    true) printf 'true\n' ;;
+    false) printf 'false\n' ;;
+    *) die 'Dunst returned an invalid pause state' ;;
+  esac
+}
+
+print_status() {
+  printf 'dnd=%s\n' "$(read_dnd)"
+}
+
+state_file="${XDG_STATE_HOME:-${HOME:?}/.local/state}/argvus/notifications/dnd"
+
+remember() {
+  mkdir -p "$(dirname "$state_file")"
+  umask 077
+  printf '%s\n' "$1" >"$state_file"
+}
+
+set_dnd() {
+  case "$1" in
+    true|false) ;;
+    *) die 'DND value must be true or false' ;;
+  esac
+  have_dunstctl
+  dunstctl set-paused "$1" >/dev/null 2>&1 || die 'failed to change Dunst pause state'
+  remember "$1"
+  print_status
+}
+
+toggle_dnd() {
+  current="$(read_dnd)"
+  if [ "$current" = true ]; then
+    set_dnd false
+  else
+    set_dnd true
+  fi
+}
+
+[ "$#" -gt 0 ] || { usage >&2; exit 2; }
+case "$1" in
+  status)
+    [ "$#" -eq 1 ] || { usage >&2; exit 2; }
+    print_status
+    ;;
+  dnd)
+    [ "$#" -eq 2 ] || { usage >&2; exit 2; }
+    case "$2" in
+      status) print_status ;;
+      on) set_dnd true ;;
+      off) set_dnd false ;;
+      toggle) toggle_dnd ;;
+      restore)
+        if [ -r "$state_file" ]; then
+          value="$(tr -d '[:space:]' <"$state_file")"
+          case "$value" in
+            true) set_dnd true ;;
+            false) set_dnd false ;;
+            *) die 'stored DND preference is invalid' ;;
+          esac
+        else
+          set_dnd false
+        fi
+        ;;
+      *) usage >&2; exit 2 ;;
+    esac
+    ;;
+  *) usage >&2; exit 2 ;;
+esac

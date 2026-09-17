@@ -33,6 +33,7 @@ arch_check_notifications_payload() {
 
 	test -f "${source_root}/src/usr/share/argvus/notifications/config/dunstrc"
 	test -x "${source_root}/src/usr/share/argvus/notifications/sh/notify.sh"
+	test -x "${source_root}/src/usr/bin/argvus-notifications"
 	test -n "$(find "${source_root}/src/usr/share/argvus/notifications/config/themes" \
 		-type f -name '*.theme' -print -quit)"
 }
@@ -42,6 +43,8 @@ arch_package_notifications_payload() {
 
 	install -dm755 "${pkgdir}"
 	cp -a "${source_root}/src/." "${pkgdir}/"
+	install -Dm755 "${source_root}/src/usr/bin/argvus-notifications" \
+		"${pkgdir}/usr/bin/argvus-notifications"
 	find "${pkgdir}/usr/share/argvus/notifications" -type f -name '*.sh' \
 		-exec chmod 755 {} +
 	install -Dm644 "${source_root}/LICENSE" \
