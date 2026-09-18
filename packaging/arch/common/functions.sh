@@ -33,6 +33,7 @@ arch_check_notifications_payload() {
 
 	test -f "${source_root}/src/usr/share/argvus/notifications/config/dunstrc"
 	test -x "${source_root}/src/usr/share/argvus/notifications/sh/notify.sh"
+	test -x "${source_root}/src/usr/share/argvus/notifications/sh/theme.sh"
 	test -x "${source_root}/src/usr/bin/argvus-notifications"
 	test -n "$(find "${source_root}/src/usr/share/argvus/notifications/config/themes" \
 		-type f -name '*.theme' -print -quit)"

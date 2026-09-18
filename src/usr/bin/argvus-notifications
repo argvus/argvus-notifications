@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 set -eu
 
+# shellcheck disable=SC1091
+ARGVUS_NOTIFICATIONS_HELPER="${ARGVUS_NOTIFICATIONS_HELPER:-${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/notifications/sh/theme.sh}"
+. "$ARGVUS_NOTIFICATIONS_HELPER"
+
 usage() {
   printf '%s\n' \
     'Usage: argvus-notifications status' \
-    '       argvus-notifications dnd status|on|off|toggle|restore'
+    '       argvus-notifications dnd status|on|off|toggle|restore' \
+    '       argvus-notifications theme apply|restore [theme]'
 }
 
 die() {
@@ -31,6 +36,7 @@ print_status() {
 }
 
 state_file="${XDG_STATE_HOME:-${HOME:?}/.local/state}/argvus/notifications/dnd"
+active_theme_file="${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-${HOME:?}/.config}}/argvus/.active-theme"
 
 remember() {
   mkdir -p "$(dirname "$state_file")"
@@ -57,7 +63,15 @@ restore_dnd() {
   esac
   have_dunstctl
   # Restore only Dunst's pause bit. Do not rewrite state or theme files.
-  dunstctl set-paused "$value" >/dev/null 2>&1 || die 'failed to restore Dunst pause state'
+  # Dunst is started immediately before this hook and may not have acquired
+  # its D-Bus name yet. Retry briefly instead of making the service startup
+  # race leave the runtime state out of sync with the persisted preference.
+  attempt=0
+  while ! dunstctl set-paused "$value" >/dev/null 2>&1; do
+    attempt=$((attempt + 1))
+    [ "$attempt" -lt 20 ] || die 'failed to restore Dunst pause state'
+    sleep 0.1
+  done
   print_status
 }
 
@@ -68,6 +82,21 @@ toggle_dnd() {
   else
     set_dnd true
   fi
+}
+
+restore_theme() {
+  local theme
+  theme="$(tr -d '[:space:]' <"$active_theme_file" 2>/dev/null || true)"
+  [ -n "$theme" ] || theme='argvus-dark-aether'
+  argvus_notifications_apply_theme "$theme" || die "notification theme is unavailable: $theme"
+  printf 'theme=%s\n' "$theme"
+}
+
+apply_theme() {
+  local theme="${1:-}"
+  [ -n "$theme" ] || { usage >&2; exit 2; }
+  argvus_notifications_apply_theme "$theme" || die "notification theme is unavailable: $theme"
+  printf 'theme=%s\n' "$theme"
 }
 
 [ "$#" -gt 0 ] || { usage >&2; exit 2; }
@@ -94,6 +123,20 @@ case "$1" in
         else
           restore_dnd false
         fi
+        ;;
+      *) usage >&2; exit 2 ;;
+    esac
+    ;;
+  theme)
+    [ "$#" -ge 2 ] || { usage >&2; exit 2; }
+    case "$2" in
+      apply)
+        [ "$#" -eq 3 ] || { usage >&2; exit 2; }
+        apply_theme "$3"
+        ;;
+      restore)
+        [ "$#" -eq 2 ] || { usage >&2; exit 2; }
+        restore_theme
         ;;
       *) usage >&2; exit 2 ;;
     esac
