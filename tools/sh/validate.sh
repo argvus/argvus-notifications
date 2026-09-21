@@ -23,6 +23,7 @@ shellcheck tools/sh/*.sh packaging/arch/common/*.sh \
 	src/usr/share/argvus/notifications/sh/*.sh
 bash -n tools/sh/*.sh packaging/arch/common/*.sh \
 	src/usr/share/argvus/notifications/sh/*.sh
+bash tools/test-accent-theme.sh
 
 metadata() {
 	bash -c '

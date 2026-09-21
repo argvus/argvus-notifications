@@ -21,6 +21,26 @@ argvus_notifications_theme_value() {
   printf '%s\n' "$fallback"
 }
 
+argvus_notifications_accent_override() {
+  local config_home="${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}"
+  local accent_file="$config_home/argvus/.accent-color"
+  local accent
+
+  [ -s "$accent_file" ] || return 0
+  accent="$(sed -n '1{s/\r$//;s/^[[:space:]]*//;s/[[:space:]]*$//;p;}' "$accent_file")"
+  case "$accent" in
+    \#*) accent="${accent#\#}" ;;
+  esac
+  case "$accent" in
+    ??????)
+      case "$accent" in
+        *[!0-9A-Fa-f]*) return 0 ;;
+      esac
+      printf '#%s\n' "$accent"
+      ;;
+  esac
+}
+
 argvus_notifications_set_dunst_value() {
   local file="$1"
   local section="$2"
@@ -62,6 +82,7 @@ argvus_notifications_apply_theme() {
   local candidate
   local base_theme
   local highlight frame low_bg low_fg normal_bg normal_fg critical_bg critical_fg app_bg app_fg
+  local accent_override
 
   theme="$(argvus_notifications_theme_name "$theme")" || return 1
   base_theme="${theme%-float}"
@@ -93,6 +114,11 @@ argvus_notifications_apply_theme() {
   critical_fg="$(argvus_notifications_theme_value "$theme_file" critical_foreground "$normal_fg")"
   app_bg="$(argvus_notifications_theme_value "$theme_file" app_background "$normal_bg")"
   app_fg="$(argvus_notifications_theme_value "$theme_file" app_foreground "$normal_fg")"
+  accent_override="$(argvus_notifications_accent_override || true)"
+  if [ -n "$accent_override" ]; then
+    highlight="$accent_override"
+    frame="$accent_override"
+  fi
 
   argvus_notifications_set_dunst_value "$dunstrc" global highlight "$highlight"
   argvus_notifications_set_dunst_value "$dunstrc" global frame_color "$frame"
