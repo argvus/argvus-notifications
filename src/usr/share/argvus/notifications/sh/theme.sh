@@ -60,9 +60,9 @@ argvus_notifications_set_dunst_value() {
 
 argvus_notifications_theme_name() {
   case "$1" in
-    argvus-dark-aether|argvus-dark-aether-float|argvus-dark-silver|argvus-dark-silver-float|\
+    argvus-onedark|argvus-onedark-float|argvus-dracula|argvus-dracula-float|argvus-dark-aether|argvus-dark-aether-float|argvus-dark-silver|argvus-dark-silver-float|\
       argvus-dark-slate|argvus-dark-slate-float|argvus-dark-universe|argvus-dark-universe-float|\
-      argvus-light-veil|argvus-light-veil-float)
+      argvus-light-veil|argvus-light-veil-float|argvus-frost|argvus-frost-float|argvus-catppuccin-latte|argvus-catppuccin-latte-float|argvus-gruvbox-dark-medium|argvus-gruvbox-dark-medium-float|argvus-rosepine|argvus-rosepine-float|argvus-tokyo-night|argvus-tokyo-night-float)
       printf '%s\n' "$1"
       ;;
     *)

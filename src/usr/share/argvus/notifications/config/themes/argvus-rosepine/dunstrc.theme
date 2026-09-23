@@ -1,0 +1,11 @@
+# theme: argvus-rosepine
+highlight = "#C4A7E7"
+frame_color = "#C4A7E7"
+low_background = "#191724"
+low_foreground = "#908CAA"
+normal_background = "#26233A"
+normal_foreground = "#E0DEF4"
+critical_background = "#EB6F92"
+critical_foreground = "#E0DEF4"
+app_background = "#21202E"
+app_foreground = "#E0DEF4"
