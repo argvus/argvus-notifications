@@ -1,6 +1,6 @@
-# theme: argvus-gruvbox-dark-medium-float
-highlight = "#D79921"
-frame_color = "#D79921"
+# theme: argvus-dark-gruvbox
+highlight = "#D4BE98"
+frame_color = "#D4BE98"
 low_background = "#282828"
 low_foreground = "#A89984"
 normal_background = "#504945"
