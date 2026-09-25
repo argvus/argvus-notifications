@@ -1,0 +1,11 @@
+# theme: one-light-float
+highlight = "#4078F2"
+frame_color = "#D7DAE0"
+low_background = "#FFFFFF"
+low_foreground = "#696C77"
+normal_background = "#FFFFFF"
+normal_foreground = "#383A42"
+critical_background = "#FFFFFF"
+critical_foreground = "#383A42"
+app_background = "#FAFAFA"
+app_foreground = "#383A42"
