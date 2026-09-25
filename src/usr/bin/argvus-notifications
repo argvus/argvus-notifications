@@ -87,7 +87,7 @@ toggle_dnd() {
 restore_theme() {
   local theme
   theme="$(tr -d '[:space:]' <"$active_theme_file" 2>/dev/null || true)"
-  [ -n "$theme" ] || theme='argvus-dark-aether'
+  [ -n "$theme" ] || theme='argvus-dark'
   argvus_notifications_apply_theme "$theme" || die "notification theme is unavailable: $theme"
   printf 'theme=%s\n' "$theme"
 }

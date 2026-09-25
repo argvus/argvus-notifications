@@ -1,0 +1,11 @@
+# theme: solitude-float
+highlight = "#798186"
+frame_color = "#798186"
+low_background = "#101315"
+low_foreground = "#9FA5A9"
+normal_background = "#1A1E20"
+normal_foreground = "#CACCCC"
+critical_background = "#DE6145"
+critical_foreground = "#CACCCC"
+app_background = "#202528"
+app_foreground = "#CACCCC"

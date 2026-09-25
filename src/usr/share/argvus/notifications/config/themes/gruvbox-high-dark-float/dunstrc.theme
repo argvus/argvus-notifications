@@ -1,0 +1,11 @@
+# theme: gruvbox-high-dark-float
+highlight = "#D79921"
+frame_color = "#D79921"
+low_background = "#282828"
+low_foreground = "#A89984"
+normal_background = "#504945"
+normal_foreground = "#EBDBB2"
+critical_background = "#CC241D"
+critical_foreground = "#EBDBB2"
+app_background = "#3C3836"
+app_foreground = "#EBDBB2"

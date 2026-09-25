@@ -1,0 +1,11 @@
+# theme: solarized-light-float
+highlight = "#268BD2"
+frame_color = "#D8D2BE"
+low_background = "#FDF6E3"
+low_foreground = "#839496"
+normal_background = "#F7F0DD"
+normal_foreground = "#839496"
+critical_background = "#FBE5E3"
+critical_foreground = "#DC322F"
+app_background = "#FDF6E3"
+app_foreground = "#657B83"

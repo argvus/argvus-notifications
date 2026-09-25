@@ -1,0 +1,11 @@
+# theme: dracula-float
+highlight = "#BD93F9"
+frame_color = "#BD93F9"
+low_background = "#282A36"
+low_foreground = "#6272A4"
+normal_background = "#343746"
+normal_foreground = "#F8F8F2"
+critical_background = "#DE5735"
+critical_foreground = "#F8F8F2"
+app_background = "#21222C"
+app_foreground = "#F8F8F2"

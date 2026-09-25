@@ -1,0 +1,11 @@
+# theme: frost-float
+highlight = "#0969DA"
+frame_color = "#AAB4C0"
+low_background = "#F6F8FA"
+low_foreground = "#6E7781"
+normal_background = "#FFFFFF"
+normal_foreground = "#24292F"
+critical_background = "#FFEBE9"
+critical_foreground = "#24292F"
+app_background = "#F6F8FA"
+app_foreground = "#24292F"

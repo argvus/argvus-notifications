@@ -1,0 +1,11 @@
+# theme: hackerman
+highlight = "#82FB9C"
+frame_color = "#82FB9C"
+low_background = "#0B0C16"
+low_foreground = "#A7BEC5"
+normal_background = "#141722"
+normal_foreground = "#DDF7FF"
+critical_background = "#FF6B7A"
+critical_foreground = "#DDF7FF"
+app_background = "#1A1D29"
+app_foreground = "#DDF7FF"

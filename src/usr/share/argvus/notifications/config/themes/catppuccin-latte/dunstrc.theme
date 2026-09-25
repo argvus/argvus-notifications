@@ -1,0 +1,11 @@
+# theme: catppuccin-latte
+highlight = "#1E66F5"
+frame_color = "#ACB0BE"
+low_background = "#EFF1F5"
+low_foreground = "#5C5F77"
+normal_background = "#E6E9EF"
+normal_foreground = "#4C4F69"
+critical_background = "#DCE0E8"
+critical_foreground = "#4C4F69"
+app_background = "#EFF1F5"
+app_foreground = "#4C4F69"

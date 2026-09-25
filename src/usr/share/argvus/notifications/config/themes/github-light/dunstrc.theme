@@ -1,0 +1,11 @@
+# theme: github-light
+highlight = "#1F2328"
+frame_color = "#1F2328"
+low_background = "#FFFFFF"
+low_foreground = "#57606A"
+normal_background = "#F6F8FA"
+normal_foreground = "#1F2328"
+critical_background = "#FFEBE9"
+critical_foreground = "#1F2328"
+app_background = "#FFFFFF"
+app_foreground = "#1F2328"

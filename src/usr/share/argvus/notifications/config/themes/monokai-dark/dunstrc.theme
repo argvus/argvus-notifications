@@ -1,0 +1,11 @@
+# theme: monokai-dark; palette based on Monokai Pro colors
+highlight = "#78DCE8"
+frame_color = "#5B595C"
+low_background = "#221F22"
+low_foreground = "#939293"
+normal_background = "#2D2A2E"
+normal_foreground = "#FCFCFA"
+critical_background = "#FF6188"
+critical_foreground = "#FCFCFA"
+app_background = "#403E41"
+app_foreground = "#FCFCFA"

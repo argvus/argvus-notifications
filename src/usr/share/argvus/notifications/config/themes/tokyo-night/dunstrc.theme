@@ -1,0 +1,11 @@
+# theme: tokyo-night
+highlight = "#7AA2F7"
+frame_color = "#7AA2F7"
+low_background = "#1A1B26"
+low_foreground = "#A9B1D6"
+normal_background = "#292E42"
+normal_foreground = "#C0CAF5"
+critical_background = "#F7768E"
+critical_foreground = "#C0CAF5"
+app_background = "#24283B"
+app_foreground = "#C0CAF5"

@@ -60,9 +60,11 @@ argvus_notifications_set_dunst_value() {
 
 argvus_notifications_theme_name() {
   case "$1" in
-    argvus-onedark|argvus-onedark-float|argvus-dark-dracula|argvus-dark-dracula-float|argvus-dark-aether|argvus-dark-aether-float|argvus-dark-silver|argvus-dark-silver-float|\
-      argvus-dark-slate|argvus-dark-slate-float|argvus-dark-universe|argvus-dark-universe-float|\
-      argvus-light-veil|argvus-light-veil-float|argvus-github-light|argvus-github-light-float|argvus-light-solarized|argvus-light-solarized-float|argvus-light-frost|argvus-light-frost-float|argvus-light-catppuccin-latte|argvus-light-catppuccin-latte-float|argvus-light-gruvbox|argvus-light-gruvbox-float|argvus-dark-gruvbox-high|argvus-dark-gruvbox-high-float|argvus-dark-gruvbox|argvus-dark-gruvbox-float|argvus-dark-rosepine|argvus-dark-rosepine-float|argvus-dark-tokio-night|argvus-dark-tokio-night-float|argvus-dark-solitude|argvus-dark-solitude-float|argvus-dark-sunset|argvus-dark-sunset-float|argvus-dark-hackerman|argvus-dark-hackerman-float|argvus-dark-monokai|argvus-dark-monokai-float)
+    argvus-catppuccin-latte|argvus-light-catppuccin-latte) printf '%s\n' "catppuccin-latte" ;;
+    argvus-catppuccin-latte-float|argvus-light-catppuccin-latte-float) printf '%s\n' "catppuccin-latte-float" ;;
+    one-dark|one-dark-float|dracula|dracula-float|argvus-dark|argvus-dark-float|silver-dark|silver-dark-float|\
+      slate-dark|slate-dark-float|universe|universe-float|\
+      argvus-light|argvus-light-float|github-light|github-light-float|solarized-light|solarized-light-float|frost|frost-float|catppuccin-latte|catppuccin-latte-float|gruvbox-light|gruvbox-light-float|gruvbox-high-dark|gruvbox-high-dark-float|gruvbox-dark|gruvbox-dark-float|rose-pine|rose-pine-float|tokyo-night|tokyo-night-float|solitude|solitude-float|sunset|sunset-float|hackerman|hackerman-float|monokai-dark|monokai-dark-float)
       printf '%s\n' "$1"
       ;;
     *)

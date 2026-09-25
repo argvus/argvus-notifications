@@ -1,0 +1,11 @@
+# theme: sunset
+highlight = "#E2BE8A"
+frame_color = "#E2BE8A"
+low_background = "#0F0F0F"
+low_foreground = "#CEA37F"
+normal_background = "#1A1816"
+normal_foreground = "#EADCCC"
+critical_background = "#E25D6C"
+critical_foreground = "#EADCCC"
+app_background = "#211E1B"
+app_foreground = "#EADCCC"
