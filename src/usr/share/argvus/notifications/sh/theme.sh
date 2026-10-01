@@ -23,7 +23,7 @@ argvus_notifications_theme_value() {
 
 argvus_notifications_accent_override() {
   local config_home="${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}"
-  local accent_file="$config_home/argvus/.accent-color"
+  local accent_file="$config_home/argvus/data/.accent-color"
   local accent
 
   [ -s "$accent_file" ] || return 0
@@ -75,10 +75,10 @@ argvus_notifications_theme_name() {
 
 argvus_notifications_apply_theme() {
   local theme="$1"
-  local dunstrc="${2:-${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}/argvus/dunst/dunstrc}"
+  local dunstrc="${2:-${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}/argvus/data/dunst/dunstrc}"
   local config_home="${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}"
   local system_config="${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}"
-  local user_themes="$config_home/argvus/dunst/themes"
+  local user_themes="$config_home/argvus/data/dunst/themes"
   local system_themes="$system_config/notifications/config/themes"
   local theme_file=''
   local candidate

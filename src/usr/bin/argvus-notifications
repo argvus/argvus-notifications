@@ -36,7 +36,7 @@ print_status() {
 }
 
 state_file="${XDG_STATE_HOME:-${HOME:?}/.local/state}/argvus/notifications/dnd"
-active_theme_file="${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-${HOME:?}/.config}}/argvus/.active-theme"
+active_theme_file="${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-${HOME:?}/.config}}/argvus/data/.active-theme"
 
 remember() {
   mkdir -p "$(dirname "$state_file")"
