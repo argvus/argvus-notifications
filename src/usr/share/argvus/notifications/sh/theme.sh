@@ -68,7 +68,9 @@ argvus_notifications_theme_name() {
       printf '%s\n' "$1"
       ;;
     *)
-      return 1
+      # Drop-in themes are known through their installed manifest.
+      [ -r "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/appearance/themes.d/$1/theme.toml" ] || return 1
+      printf '%s\n' "$1"
       ;;
   esac
 }
