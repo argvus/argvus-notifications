@@ -7,7 +7,7 @@ Dunst configuration, notification themes and notification integration for ARGVUS
 [![License](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
 
 This repository provides the notification payload owned by ARGVUS. Runtime
-ownership stays connected to `argvus-sessionctl` and `argvus-session.target`.
+ownership stays connected to `argvus sessionctl` and `argvus-session.target`.
 
 ## Build and install
 

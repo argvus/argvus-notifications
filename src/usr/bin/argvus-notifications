@@ -7,9 +7,9 @@ ARGVUS_NOTIFICATIONS_HELPER="${ARGVUS_NOTIFICATIONS_HELPER:-${ARGVUS_SYSTEM_CONF
 
 usage() {
   printf '%s\n' \
-    'Usage: argvus-notifications status' \
-    '       argvus-notifications dnd status|on|off|toggle|restore' \
-    '       argvus-notifications theme apply|restore [theme]'
+    'Usage: argvus notifications status' \
+    '       argvus notifications dnd status|on|off|toggle|restore' \
+    '       argvus notifications theme apply|restore [theme]'
 }
 
 die() {

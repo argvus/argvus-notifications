@@ -44,8 +44,8 @@ arch_package_notifications_payload() {
 
 	install -dm755 "${pkgdir}"
 	cp -a "${source_root}/src/." "${pkgdir}/"
-	install -Dm755 "${source_root}/src/usr/bin/argvus-notifications" \
-		"${pkgdir}/usr/bin/argvus-notifications"
+	install -dm755 "${pkgdir}/usr/lib/argvus/commands"
+	mv "${pkgdir}/usr/bin/argvus-notifications" "${pkgdir}/usr/lib/argvus/commands/argvus-notifications"
 	find "${pkgdir}/usr/share/argvus/notifications" -type f -name '*.sh' \
 		-exec chmod 755 {} +
 	install -Dm644 "${source_root}/LICENSE" \
