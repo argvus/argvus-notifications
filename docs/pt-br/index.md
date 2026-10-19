@@ -1,7 +1,6 @@
 ---
 title: Notificações
 description: Use notificações e não perturbe.
-slug: pt/0.4.0/docs/user-guide/privacy-and-security/notifications
 ---
 
 ```sh
