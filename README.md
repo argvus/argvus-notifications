@@ -27,7 +27,7 @@ there.
 For metadata-only checks:
 
 ```sh
-makepkg -p packaging/arch/ci/PKGBUILD --printsrcinfo
+makepkg -p packaging/arch/remote/PKGBUILD --printsrcinfo
 makepkg -p packaging/arch/local/PKGBUILD --printsrcinfo
 ```
 
