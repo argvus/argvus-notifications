@@ -39,6 +39,13 @@ release packaging workflow.
 The package installs Dunst configuration and themes under
 `/usr/share/argvus/notifications/`, including the notification helper script.
 
+## Contributing and policies
+
+- [CONTRIBUTING.md](https://github.com/argvus/.github/blob/main/CONTRIBUTING.md) — contribution workflow
+- [SECURITY.md](https://github.com/argvus/.github/blob/main/SECURITY.md) — private vulnerability reports
+- [Code of Conduct](https://github.com/argvus/.github/blob/main/policies/CODE_OF_CONDUCT.md) — community standards
+- [AI usage policy](https://github.com/argvus/.github/blob/main/policies/IA_USAGE.md) — rules for AI-assisted contributions
+
 ## License
 
 SPDX: `GPL-3.0-only`. See [LICENSE](LICENSE).
