@@ -1,0 +1,11 @@
+# theme: {{ theme.id }}
+highlight = "{{ @accent | hex }}"
+frame_color = "{{ @accent | hex }}"
+low_background = "{{ @notify_low_background | hex }}"
+low_foreground = "{{ @notify_low_foreground | hex }}"
+normal_background = "{{ @notify_normal_background | hex }}"
+normal_foreground = "{{ @notify_normal_foreground | hex }}"
+critical_background = "{{ @notify_critical_background | hex }}"
+critical_foreground = "{{ @notify_critical_foreground | hex }}"
+app_background = "{{ @notify_app_background | hex }}"
+app_foreground = "{{ @fg | hex }}"

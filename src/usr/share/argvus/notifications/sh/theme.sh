@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 # Shared Dunst theme application used by the notification backend and the
-# appearance theme switcher. The existing dunstrc remains the source of all
-# unrelated Dunst behaviour; only theme-owned color keys are updated here.
+# appearance theme switcher. The colours come from the theme build; the
+# existing dunstrc remains the source of all unrelated Dunst behaviour, and
+# only theme-owned color keys are updated here.
 
 argvus_notifications_theme_value() {
   local file="$1"
@@ -19,26 +20,6 @@ argvus_notifications_theme_value() {
   fi
 
   printf '%s\n' "$fallback"
-}
-
-argvus_notifications_accent_override() {
-  local config_home="${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}"
-  local accent_file="$config_home/argvus/data/.accent-color"
-  local accent
-
-  [ -s "$accent_file" ] || return 0
-  accent="$(sed -n '1{s/\r$//;s/^[[:space:]]*//;s/[[:space:]]*$//;p;}' "$accent_file")"
-  case "$accent" in
-    \#*) accent="${accent#\#}" ;;
-  esac
-  case "$accent" in
-    ??????)
-      case "$accent" in
-        *[!0-9A-Fa-f]*) return 0 ;;
-      esac
-      printf '#%s\n' "$accent"
-      ;;
-  esac
 }
 
 argvus_notifications_set_dunst_value() {
@@ -58,50 +39,30 @@ argvus_notifications_set_dunst_value() {
   ' "$file" >"$temporary" && mv -- "$temporary" "$file"
 }
 
-argvus_notifications_theme_name() {
-  case "$1" in
-    argvus-catppuccin-latte|argvus-light-catppuccin-latte) printf '%s\n' "catppuccin-latte" ;;
-    argvus-catppuccin-latte-float|argvus-light-catppuccin-latte-float) printf '%s\n' "catppuccin-latte-float" ;;
-    one-dark|one-dark-float|dracula|dracula-float|argvus-dark|argvus-dark-float|silver-dark|silver-dark-float|\
-      slate-dark|slate-dark-float|universe|universe-float|\
-      argvus-light|argvus-light-float|github-light|github-light-float|solarized-light|solarized-light-float|one-light|one-light-float|everforest-light|everforest-light-float|catppuccin-latte|catppuccin-latte-float|gruvbox-light|gruvbox-light-float|gruvbox-high-dark|gruvbox-high-dark-float|gruvbox-dark|gruvbox-dark-float|rose-pine|rose-pine-float|tokyo-night|tokyo-night-float|solitude|solitude-float|sunset|sunset-float|matrix|matrix-float|monokai-dark|monokai-dark-float)
-      printf '%s\n' "$1"
-      ;;
-    *)
-      # Drop-in themes are known through their installed manifest.
-      [ -r "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/appearance/themes.d/$1/theme.toml" ] || return 1
-      printf '%s\n' "$1"
-      ;;
-  esac
+# The notification colours of the theme build (`argvus theme`), printed only
+# when the build behind `generated/theme/current` was rendered for theme $1.
+argvus_notifications_build_theme_file() {
+  local config_home="${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}"
+  local build="${ARGVUS_DATA_HOME:-$config_home/argvus/data}/generated/theme/current"
+  local built_theme
+  [ -r "$build/build.toml" ] || return 1
+  built_theme="$(sed -n 's/^theme = "\(.*\)"$/\1/p' "$build/build.toml" | head -n 1)"
+  if grep -q '^variant = "float"$' "$build/build.toml"; then
+    built_theme="${built_theme}-float"
+  fi
+  [ -n "$built_theme" ] && [ "$built_theme" = "$1" ] && [ -f "$build/notifications/dunstrc.theme" ] || return 1
+  printf '%s\n' "$build/notifications/dunstrc.theme"
 }
 
 argvus_notifications_apply_theme() {
   local theme="$1"
   local dunstrc="${2:-${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}/argvus/data/dunst/dunstrc}"
-  local config_home="${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}"
   local system_config="${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}"
-  local user_themes="$config_home/argvus/data/dunst/themes"
-  local system_themes="$system_config/notifications/config/themes"
-  local theme_file=''
-  local candidate
-  local base_theme
+  local theme_file
   local highlight frame low_bg low_fg normal_bg normal_fg critical_bg critical_fg app_bg app_fg
-  local accent_override
 
-  theme="$(argvus_notifications_theme_name "$theme")" || return 1
-  base_theme="${theme%-float}"
-
-  for candidate in \
-    "$user_themes/$theme/dunstrc.theme" \
-    "$user_themes/$base_theme/dunstrc.theme" \
-    "$system_themes/$theme/dunstrc.theme" \
-    "$system_themes/$base_theme/dunstrc.theme"; do
-    if [ -f "$candidate" ]; then
-      theme_file="$candidate"
-      break
-    fi
-  done
-  [ -n "$theme_file" ] || return 1
+  # The theme build has the notification colours of the theme and its accent.
+  theme_file="$(argvus_notifications_build_theme_file "$theme")" || return 1
 
   if [ ! -f "$dunstrc" ]; then
     mkdir -p "${dunstrc%/*}"
@@ -118,11 +79,6 @@ argvus_notifications_apply_theme() {
   critical_fg="$(argvus_notifications_theme_value "$theme_file" critical_foreground "$normal_fg")"
   app_bg="$(argvus_notifications_theme_value "$theme_file" app_background "$normal_bg")"
   app_fg="$(argvus_notifications_theme_value "$theme_file" app_foreground "$normal_fg")"
-  accent_override="$(argvus_notifications_accent_override || true)"
-  if [ -n "$accent_override" ]; then
-    highlight="$accent_override"
-    frame="$accent_override"
-  fi
 
   argvus_notifications_set_dunst_value "$dunstrc" global highlight "$highlight"
   argvus_notifications_set_dunst_value "$dunstrc" global frame_color "$frame"

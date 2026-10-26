@@ -1,0 +1,20 @@
+# Theme consumer: rendered into every theme build as notifications/dunstrc.theme.
+id = "notifications"
+template = "notifications/theme-template/dunstrc.theme"
+output = "notifications/dunstrc.theme"
+
+# Dunst re-reads the configuration the switch assembled from the build.
+[reload]
+kind = "command"
+argv = ["dunstctl", "reload", "${ARGVUS_DATA_HOME}/dunst/dunstrc"]
+
+# Defaults for the tokens the template reads; a theme that defines one wins.
+[palette]
+danger = "#E06C75"
+notify_app_background = "@bg"
+notify_critical_background = "@danger"
+notify_critical_foreground = "@fg"
+notify_low_background = "@bg"
+notify_low_foreground = "@fg | mix(@bg, 0.2)"
+notify_normal_background = "@bg | mix(@accent, 0.1)"
+notify_normal_foreground = "@fg"

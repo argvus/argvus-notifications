@@ -35,8 +35,8 @@ arch_check_notifications_payload() {
 	test -x "${source_root}/src/usr/share/argvus/notifications/sh/notify.sh"
 	test -x "${source_root}/src/usr/share/argvus/notifications/sh/theme.sh"
 	test -x "${source_root}/src/usr/bin/argvus-notifications"
-	test -n "$(find "${source_root}/src/usr/share/argvus/notifications/config/themes" \
-		-type f -name '*.theme' -print -quit)"
+	test -f "${source_root}/src/usr/share/argvus/notifications/theme-template/dunstrc.theme"
+	test -f "${source_root}/src/usr/share/argvus/theme/consumers.d/notifications.toml"
 }
 
 arch_package_notifications_payload() {
