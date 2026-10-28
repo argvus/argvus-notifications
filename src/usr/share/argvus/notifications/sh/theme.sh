@@ -44,10 +44,23 @@ argvus_notifications_set_dunst_value() {
 argvus_notifications_build_theme_file() {
   local config_home="${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}"
   local build="${ARGVUS_DATA_HOME:-$config_home/argvus/data}/generated/theme/current"
-  local built_theme
+  local built_theme="" is_float="" line
   [ -r "$build/build.toml" ] || return 1
-  built_theme="$(sed -n 's/^theme = "\(.*\)"$/\1/p' "$build/build.toml" | head -n 1)"
-  if grep -q '^variant = "float"$' "$build/build.toml"; then
+  # Read with shell builtins: this runs on every login before Dunst starts.
+  # The first `theme = "<id>"` line names the build; `variant = "float"` adds
+  # the Float suffix, as `argvus theme` names its builds.
+  while IFS= read -r line || [ -n "$line" ]; do
+    case "$line" in
+      'theme = "'*'"')
+        if [ -z "$built_theme" ]; then
+          built_theme="${line#theme = \"}"
+          built_theme="${built_theme%\"}"
+        fi
+        ;;
+      'variant = "float"') is_float=1 ;;
+    esac
+  done <"$build/build.toml"
+  if [ -n "$is_float" ]; then
     built_theme="${built_theme}-float"
   fi
   [ -n "$built_theme" ] && [ "$built_theme" = "$1" ] && [ -f "$build/notifications/dunstrc.theme" ] || return 1
@@ -69,37 +82,101 @@ argvus_notifications_apply_theme() {
     cp -- "$system_config/notifications/config/dunstrc" "$dunstrc"
   fi
 
-  highlight="$(argvus_notifications_theme_value "$theme_file" highlight '#3590bd')"
-  frame="$(argvus_notifications_theme_value "$theme_file" frame_color "$highlight")"
-  low_bg="$(argvus_notifications_theme_value "$theme_file" low_background '#101010')"
-  low_fg="$(argvus_notifications_theme_value "$theme_file" low_foreground '#aaaaaa')"
-  normal_bg="$(argvus_notifications_theme_value "$theme_file" normal_background "$low_bg")"
-  normal_fg="$(argvus_notifications_theme_value "$theme_file" normal_foreground "$low_fg")"
-  critical_bg="$(argvus_notifications_theme_value "$theme_file" critical_background "$normal_bg")"
-  critical_fg="$(argvus_notifications_theme_value "$theme_file" critical_foreground "$normal_fg")"
-  app_bg="$(argvus_notifications_theme_value "$theme_file" app_background "$normal_bg")"
-  app_fg="$(argvus_notifications_theme_value "$theme_file" app_foreground "$normal_fg")"
+  local -A theme_values=()
+  argvus_notifications_read_theme_values "$theme_file" theme_values
 
-  argvus_notifications_set_dunst_value "$dunstrc" global highlight "$highlight"
-  argvus_notifications_set_dunst_value "$dunstrc" global frame_color "$frame"
+  # An empty or missing key falls back, as the per-key lookup did.
+  highlight="${theme_values[highlight]:-#3590bd}"
+  frame="${theme_values[frame_color]:-$highlight}"
+  low_bg="${theme_values[low_background]:-#101010}"
+  low_fg="${theme_values[low_foreground]:-#aaaaaa}"
+  normal_bg="${theme_values[normal_background]:-$low_bg}"
+  normal_fg="${theme_values[normal_foreground]:-$low_fg}"
+  critical_bg="${theme_values[critical_background]:-$normal_bg}"
+  critical_fg="${theme_values[critical_foreground]:-$normal_fg}"
+  app_bg="${theme_values[app_background]:-$normal_bg}"
+  app_fg="${theme_values[app_foreground]:-$normal_fg}"
 
-  argvus_notifications_set_dunst_value "$dunstrc" urgency_low background "$low_bg"
-  argvus_notifications_set_dunst_value "$dunstrc" urgency_low foreground "$low_fg"
-  argvus_notifications_set_dunst_value "$dunstrc" urgency_low frame_color "$frame"
-
-  argvus_notifications_set_dunst_value "$dunstrc" urgency_normal background "$normal_bg"
-  argvus_notifications_set_dunst_value "$dunstrc" urgency_normal foreground "$normal_fg"
-  argvus_notifications_set_dunst_value "$dunstrc" urgency_normal frame_color "$frame"
-
-  argvus_notifications_set_dunst_value "$dunstrc" urgency_critical background "$critical_bg"
-  argvus_notifications_set_dunst_value "$dunstrc" urgency_critical foreground "$critical_fg"
-  argvus_notifications_set_dunst_value "$dunstrc" urgency_critical frame_color "$frame"
-  argvus_notifications_set_dunst_value "$dunstrc" urgency_critical highlight "$highlight"
-
+  local tab=$'\t'
+  local assignments="global${tab}highlight${tab}${highlight}
+global${tab}frame_color${tab}${frame}
+urgency_low${tab}background${tab}${low_bg}
+urgency_low${tab}foreground${tab}${low_fg}
+urgency_low${tab}frame_color${tab}${frame}
+urgency_normal${tab}background${tab}${normal_bg}
+urgency_normal${tab}foreground${tab}${normal_fg}
+urgency_normal${tab}frame_color${tab}${frame}
+urgency_critical${tab}background${tab}${critical_bg}
+urgency_critical${tab}foreground${tab}${critical_fg}
+urgency_critical${tab}frame_color${tab}${frame}
+urgency_critical${tab}highlight${tab}${highlight}"
   for section in hyprshot volume gpu-screen-recorder network spotify discord; do
-    argvus_notifications_set_dunst_value "$dunstrc" "$section" background "$app_bg"
-    argvus_notifications_set_dunst_value "$dunstrc" "$section" foreground "$app_fg"
-    argvus_notifications_set_dunst_value "$dunstrc" "$section" frame_color "$frame"
-    argvus_notifications_set_dunst_value "$dunstrc" "$section" highlight "$highlight"
+    assignments+="
+${section}${tab}background${tab}${app_bg}
+${section}${tab}foreground${tab}${app_fg}
+${section}${tab}frame_color${tab}${frame}
+${section}${tab}highlight${tab}${highlight}"
   done
+
+  argvus_notifications_set_dunst_values "$dunstrc" "$assignments"
+}
+
+# Reads the keys of a theme build file into the associative array named by $2,
+# in one pass and without subprocesses. A key keeps its first value, which is
+# what the sed lookup of argvus_notifications_theme_value returns.
+argvus_notifications_read_theme_values() {
+  local file="$1"
+  local -n values="$2"
+  local line key
+  [ -f "$file" ] || return 0
+  while IFS= read -r line || [ -n "$line" ]; do
+    if [[ "$line" =~ ^([A-Za-z0-9_]+)[[:space:]]*=[[:space:]]*\"?([^\"\ ]*) ]]; then
+      key="${BASH_REMATCH[1]}"
+      if [ -z "${values["$key"]+set}" ]; then
+        values["$key"]="${BASH_REMATCH[2]}"
+      fi
+    fi
+  done <"$file"
+}
+
+# Applies `section<TAB>key<TAB>value` lines to a dunstrc in one awk pass. The
+# rule is the one of argvus_notifications_set_dunst_value: inside the exact
+# `[section]` header, a `key =` line becomes `    key = "value"`, and a later
+# assignment of the same key wins. The file is replaced only when the result
+# differs, so an unchanged theme leaves dunstrc as it is.
+argvus_notifications_set_dunst_values() {
+  local file="$1"
+  local assignments="$2"
+  local temporary="${file}.theme.$$"
+
+  if ! ARGVUS_DUNST_ASSIGNMENTS="$assignments" awk '
+    BEGIN {
+      count = split(ENVIRON["ARGVUS_DUNST_ASSIGNMENTS"], lines, "\n")
+      for (i = 1; i <= count; i++) {
+        if (split(lines[i], field, "\t") == 3) {
+          wanted["[" field[1] "]", field[2]] = field[3]
+        }
+      }
+    }
+    /^\[/ { section = $0 }
+    match($0, /^[[:space:]]*[^[:space:]=]+[[:space:]]*=/) {
+      key = substr($0, RSTART, RLENGTH)
+      sub(/^[[:space:]]*/, "", key)
+      sub(/[[:space:]]*=$/, "", key)
+      if ((section, key) in wanted) {
+        print "    " key " = \"" wanted[section, key] "\""
+        next
+      }
+    }
+    { print }
+  ' "$file" >"$temporary"; then
+    rm -f -- "$temporary"
+    return 1
+  fi
+
+  if cmp -s -- "$temporary" "$file"; then
+    rm -f -- "$temporary"
+  else
+    mv -- "$temporary" "$file"
+  fi
 }

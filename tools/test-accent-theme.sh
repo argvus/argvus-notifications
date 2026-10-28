@@ -33,6 +33,15 @@ grep -Fq 'highlight = "#51B2B6"' "$dunstrc"
 grep -Fq 'frame_color = "#51B2B6"' "$dunstrc"
 grep -Fq 'background = "#123456"' "$dunstrc"
 
+# The same theme again changes nothing, so the file is not replaced: the login
+# restore must not rewrite dunstrc on every start.
+inode_before="$(stat -c %i "$dunstrc")"
+argvus_notifications_apply_theme argvus-dark "$dunstrc"
+if [ "$(stat -c %i "$dunstrc")" != "$inode_before" ]; then
+  printf 'an unchanged theme replaced dunstrc\n' >&2
+  exit 1
+fi
+
 # A build of another theme is never used, and the dunstrc is left as it is.
 cp -- "$dunstrc" "$tmp/before"
 if argvus_notifications_apply_theme argvus-light "$dunstrc"; then
