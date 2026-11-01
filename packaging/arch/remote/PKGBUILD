@@ -1,6 +1,6 @@
 # Maintainer: William C. Canin
 pkgname=argvus-notifications
-pkgver=0.1.0
+pkgver=0.0.0
 pkgrel=1
 pkgdesc="Notification configuration and Dunst integration for the ARGVUS desktop"
 arch=('any')
