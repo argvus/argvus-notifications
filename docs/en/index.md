@@ -13,4 +13,4 @@ argvus notifications dnd off
 argvus notifications dnd toggle
 ```
 
-The notification service is started by `argvus-session`; the Control Panel exposes notification state and controls.
+The notification service is started by `argvus-session`; the Control Panel exposes notification state and controls. While Do Not Disturb is active, Dunst keeps incoming notifications for later and ARGVUS closes any pop-ups already on screen. The Control Panel hides its notification list until Do Not Disturb is turned off.

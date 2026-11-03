@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -eu
 
-# shellcheck disable=SC1091
 ARGVUS_NOTIFICATIONS_HELPER="${ARGVUS_NOTIFICATIONS_HELPER:-${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/notifications/sh/theme.sh}"
+# shellcheck disable=SC1090,SC1091
 . "$ARGVUS_NOTIFICATIONS_HELPER"
 
 usage() {
@@ -51,6 +51,11 @@ set_dnd() {
   esac
   have_dunstctl
   dunstctl set-paused "$1" >/dev/null 2>&1 || die 'failed to change Dunst pause state'
+  if [ "$1" = true ]; then
+    # Pausing prevents new popups, but does not dismiss notifications already
+    # visible on screen. Dunst keeps those notifications in its history.
+    dunstctl close-all >/dev/null 2>&1 || die 'failed to close displayed notifications'
+  fi
   remember "$1"
   print_status
 }
@@ -72,6 +77,9 @@ restore_dnd() {
     [ "$attempt" -lt 20 ] || die 'failed to restore Dunst pause state'
     sleep 0.1
   done
+  if [ "$value" = true ]; then
+    dunstctl close-all >/dev/null 2>&1 || die 'failed to close displayed notifications'
+  fi
   print_status
 }
 
