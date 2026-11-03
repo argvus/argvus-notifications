@@ -3,10 +3,11 @@ id = "notifications"
 template = "notifications/theme-template/dunstrc.theme"
 output = "notifications/dunstrc.theme"
 
-# Dunst re-reads the configuration the switch assembled from the build.
+# The notifications command defers Dunst's reload while DND is active and
+# applies it when DND is turned off, preserving the pause state.
 [reload]
 kind = "command"
-argv = ["dunstctl", "reload", "${ARGVUS_DATA_HOME}/dunst/dunstrc"]
+argv = ["argvus", "notifications", "theme", "reload", "${ARGVUS_DATA_HOME}/dunst/dunstrc"]
 
 # Defaults for the tokens the template reads; a theme that defines one wins.
 [palette]

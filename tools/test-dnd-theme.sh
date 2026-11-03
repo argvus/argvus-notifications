@@ -12,6 +12,7 @@ cat >"$bin/dunstctl" <<'EOF'
 case "$1" in
   is-paused) cat "${DND_TEST_STATE:?}" ;;
   set-paused) printf '%s\n' "$2" >"${DND_TEST_STATE:?}" ;;
+  close-all) : ;;
   *) exit 1 ;;
 esac
 EOF
@@ -25,7 +26,7 @@ printf 'true\n' >"$state"
 before="$(sha256sum "$config")"
 
 PATH="$bin:$PATH" DND_TEST_STATE="$tmp/paused" XDG_STATE_HOME="$tmp/state" HOME="$tmp" \
-  sh "$root/src/usr/bin/argvus-notifications" dnd restore
+  bash "$root/src/usr/bin/argvus-notifications" dnd restore
 
 test "$(sha256sum "$config")" = "$before"
 test "$(cat "$tmp/paused")" = true

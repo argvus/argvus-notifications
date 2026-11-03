@@ -19,12 +19,13 @@ require_command shellcheck
 
 cd "$ROOT_DIR"
 
-shellcheck tools/test-dnd-behavior.sh tools/sh/*.sh packaging/arch/common/*.sh \
+shellcheck tools/test-dnd-behavior.sh tools/test-dnd-theme.sh tools/sh/*.sh packaging/arch/common/*.sh \
 	src/usr/bin/argvus-notifications src/usr/share/argvus/notifications/sh/*.sh
-bash -n tools/test-dnd-behavior.sh tools/sh/*.sh packaging/arch/common/*.sh \
+bash -n tools/test-dnd-behavior.sh tools/test-dnd-theme.sh tools/sh/*.sh packaging/arch/common/*.sh \
 	src/usr/bin/argvus-notifications src/usr/share/argvus/notifications/sh/*.sh
 bash tools/test-accent-theme.sh
 bash tools/test-dnd-behavior.sh
+bash tools/test-dnd-theme.sh
 
 metadata() {
 	bash -c '

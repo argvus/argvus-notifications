@@ -9,7 +9,8 @@ usage() {
   printf '%s\n' \
     'Usage: argvus notifications status' \
     '       argvus notifications dnd status|on|off|toggle|restore' \
-    '       argvus notifications theme apply|restore [theme]'
+    '       argvus notifications theme apply|restore [theme]' \
+    '       argvus notifications theme reload [dunstrc]'
 }
 
 die() {
@@ -36,6 +37,8 @@ print_status() {
 }
 
 state_file="${XDG_STATE_HOME:-${HOME:?}/.local/state}/argvus/notifications/dnd"
+pending_theme_reload_file="${state_file%/*}/theme-reload-pending"
+state_lock_file="${state_file}.lock"
 active_theme_file="${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-${HOME:?}/.config}}/argvus/data/.active-theme"
 
 remember() {
@@ -44,13 +47,47 @@ remember() {
   printf '%s\n' "$1" >"$state_file"
 }
 
+acquire_state_lock() {
+  mkdir -p "${state_file%/*}" || die 'failed to create notification state directory'
+  command -v flock >/dev/null 2>&1 || die 'flock is not available'
+  exec {state_lock_fd}>"$state_lock_file" || die 'failed to open notification state lock'
+  flock -x "$state_lock_fd" || die 'failed to lock notification state'
+}
+
+restore_dnd_after_reload_failure() {
+  if dunstctl set-paused true >/dev/null 2>&1; then
+    remember true
+    dunstctl close-all >/dev/null 2>&1 || true
+  fi
+}
+
+apply_pending_theme_reload() {
+  if dunstctl reload >/dev/null 2>&1; then
+    dunstctl set-paused false >/dev/null 2>&1 || {
+      restore_dnd_after_reload_failure
+      die 'failed to disable DND after applying the pending notification theme'
+    }
+    rm -f -- "$pending_theme_reload_file" || {
+      restore_dnd_after_reload_failure
+      die 'failed to clear the pending notification theme reload'
+    }
+  else
+    restore_dnd_after_reload_failure
+    die 'failed to apply the pending notification theme; DND remains enabled'
+  fi
+}
+
 set_dnd() {
   case "$1" in
     true|false) ;;
     *) die 'DND value must be true or false' ;;
   esac
   have_dunstctl
-  dunstctl set-paused "$1" >/dev/null 2>&1 || die 'failed to change Dunst pause state'
+  if [ "$1" = false ] && [ -e "$pending_theme_reload_file" ]; then
+    apply_pending_theme_reload
+  else
+    dunstctl set-paused "$1" >/dev/null 2>&1 || die 'failed to change Dunst pause state'
+  fi
   if [ "$1" = true ]; then
     # Pausing prevents new popups, but does not dismiss notifications already
     # visible on screen. Dunst keeps those notifications in its history.
@@ -80,6 +117,8 @@ restore_dnd() {
   if [ "$value" = true ]; then
     dunstctl close-all >/dev/null 2>&1 || die 'failed to close displayed notifications'
   fi
+  # A fresh Dunst process loaded the current theme configuration at startup.
+  rm -f -- "$pending_theme_reload_file" || die 'failed to clear the pending notification theme reload'
   print_status
 }
 
@@ -107,6 +146,25 @@ apply_theme() {
   printf 'theme=%s\n' "$theme"
 }
 
+reload_theme() {
+  local dnd_state
+  dnd_state="$(read_dnd)"
+  if [ "$dnd_state" = true ]; then
+    mkdir -p "${pending_theme_reload_file%/*}"
+    umask 077
+    : >"$pending_theme_reload_file" || die 'failed to defer the notification theme reload'
+    printf 'theme_reload=deferred\n'
+    return
+  fi
+
+  if [ -n "${1:-}" ]; then
+    dunstctl reload "$1" >/dev/null 2>&1 || die 'failed to reload the notification theme'
+  else
+    dunstctl reload >/dev/null 2>&1 || die 'failed to reload the notification theme'
+  fi
+  printf 'theme_reload=applied\n'
+}
+
 [ "$#" -gt 0 ] || { usage >&2; exit 2; }
 case "$1" in
   status)
@@ -115,6 +173,9 @@ case "$1" in
     ;;
   dnd)
     [ "$#" -eq 2 ] || { usage >&2; exit 2; }
+    if [ "$2" != status ]; then
+      acquire_state_lock
+    fi
     case "$2" in
       status) print_status ;;
       on) set_dnd true ;;
@@ -145,6 +206,11 @@ case "$1" in
       restore)
         [ "$#" -eq 2 ] || { usage >&2; exit 2; }
         restore_theme
+        ;;
+      reload)
+        [ "$#" -le 3 ] || { usage >&2; exit 2; }
+        acquire_state_lock
+        reload_theme "${3:-}"
         ;;
       *) usage >&2; exit 2 ;;
     esac
