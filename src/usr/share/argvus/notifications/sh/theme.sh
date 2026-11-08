@@ -47,8 +47,8 @@ argvus_notifications_build_theme_file() {
   local built_theme="" is_float="" line
   [ -r "$build/build.toml" ] || return 1
   # Read with shell builtins: this runs on every login before Dunst starts.
-  # The first `theme = "<id>"` line names the build; `variant = "float"` adds
-  # the Float suffix, as `argvus theme` names its builds.
+  # The first `theme = "<id>"` line names the build; `variant = "spaced"` adds
+  # the Spaced suffix, as `argvus theme` names its builds.
   while IFS= read -r line || [ -n "$line" ]; do
     case "$line" in
       'theme = "'*'"')
@@ -57,13 +57,15 @@ argvus_notifications_build_theme_file() {
           built_theme="${built_theme%\"}"
         fi
         ;;
-      'variant = "float"') is_float=1 ;;
+      'variant = "spaced"'|'variant = "float"') is_float=1 ;;
     esac
   done <"$build/build.toml"
   if [ -n "$is_float" ]; then
-    built_theme="${built_theme}-float"
+    built_theme="${built_theme}-spaced"
   fi
-  [ -n "$built_theme" ] && [ "$built_theme" = "$1" ] && [ -f "$build/notifications/dunstrc.theme" ] || return 1
+  local requested_theme="$1"
+  case "$requested_theme" in *-float) requested_theme="${requested_theme%-float}-spaced" ;; esac
+  [ -n "$built_theme" ] && [ "$built_theme" = "$requested_theme" ] && [ -f "$build/notifications/dunstrc.theme" ] || return 1
   printf '%s\n' "$build/notifications/dunstrc.theme"
 }
 
