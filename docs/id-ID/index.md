@@ -1,5 +1,5 @@
 ---
-title: Notifications
+title: Pemberitahuan
 description: Gunakan kontrol notifikasi dan jangan ganggu.
 ---
 

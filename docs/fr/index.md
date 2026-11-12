@@ -1,5 +1,5 @@
 ---
-title: Notifications
+title: Notifications
 description: Utilisez les contrôles de notification et de ne pas déranger.
 ---
 `argvus-notifications` fournit la commande de notification et la configuration de Dunst. Son interface publique comprend :

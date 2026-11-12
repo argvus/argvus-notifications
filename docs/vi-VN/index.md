@@ -1,5 +1,5 @@
 ---
-title: Notifications
+title: Thông báo
 description: Sử dụng thông báo và các điều khiển không làm phiền.
 ---
 

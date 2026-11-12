@@ -1,5 +1,5 @@
 ---
-title: Notifications
+title: सूचनाएं
 description: नोटिफिकेशन और डू-नॉट-डिस्टर्ब नियंत्रण का उपयोग करें।
 ---
 

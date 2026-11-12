@@ -1,5 +1,5 @@
 ---
-title: Notifications
+title: Bildirimler
 description: Bildirim ve rahatsız etme modunu kontrol etmek için kullanın.
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: Notifications
+title: اطلاعات
 description:                                 ۔ﮟﯾﺮﮐ ﻝﺎﻤﻌﺘﺳﺍ ﺰﻟﻭﺮﭩﻨﮐ ﮯﮐ ﺖﻠﺧﺍﺪﻣ ﻡﺪﻋ ﺭﻭﺍ ﺕﺎﻋﻼ﻿ﻃﺍ
 ---
 
