@@ -13,4 +13,4 @@ argvus notifications dnd off
 argvus notifications dnd toggle
 ```
 
-Layanan notifikasi dijalankan oleh `argvus-session`; Panel Kontrol menampilkan status notifikasi dan kontrolnya. Saat Mode Jangan Ganggu aktif, Dunst menahan notifikasi masuk untuk nanti dan ARGVUS menutup semua pop-up yang sudah muncul di layar. Panel Kontrol menyembunyikan daftar notifikasinya hingga Mode Jangan Ganggu dimatikan. Perubahan tema menunda pemuatan ulang Dunst hingga Mode Jangan Ganggu dimatikan, sehingga mengubah tema tidak menonaktifkannya.
+Riwayat tetap terlihat saat Jangan Ganggu aktif. Notifikasi dikelompokkan per aplikasi, awalnya diciutkan dengan pratinjau terbaru. Buka grup lalu pilih judul untuk membaca teks lengkap. Hapus satu grup atau seluruh riwayat. Pembaruan mempertahankan grup terbuka. Lebar pop-up 200–340 px dan tinggi dinamis hingga 100 px; dua notifikasi dapat tampil bersama indikator kelebihan. Pemuatan ulang tema tetap ditunda selama Jangan Ganggu.

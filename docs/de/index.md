@@ -11,4 +11,4 @@ argvus notifications dnd on
 argvus notifications dnd off
 argvus notifications dnd toggle
 ```
-Der Benachrichtigungsdienst wird von `argvus-session` gestartet; das Bedienfeld zeigt den Benachrichtigungsstatus und Steuerungen an. Während "Nicht stören" aktiv ist, bewahrt Dunst eingehende Benachrichtigungen für später auf und ARGVUS schließt alle bereits auf dem Bildschirm befindlichen Pop-ups. Das Bedienfeld verbirgt seine Benachrichtigungsliste, bis "Nicht stören" deaktiviert wird. Themenänderungen verzögern das Neuladen von Dunst, bis "Nicht stören" ausgeschaltet wird, sodass das Ändern von Themen es nicht deaktiviert.
+Der Verlauf bleibt bei „Nicht stören“ sichtbar. Benachrichtigungen werden nach Anwendung gruppiert und zunächst mit der neuesten Vorschau eingeklappt. Eine Gruppe aufklappen und einen Titel auswählen, um den vollständigen Text zu lesen. Einzelne Gruppen oder den gesamten Verlauf löschen. Aktualisierungen erhalten geöffnete Gruppen. Pop-ups sind 200–340 px breit und dynamisch bis zu 100 px hoch; zwei Meldungen können neben der Überlaufanzeige erscheinen. Das Neuladen des Designs wird bei „Nicht stören“ weiterhin verschoben.

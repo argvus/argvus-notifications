@@ -13,4 +13,4 @@ argvus notifications dnd off
 argvus notifications dnd toggle
 ```
 
-Dịch vụ thông báo được khởi động bởi `argvus-session`; Bảng Điều khiển hiển thị trạng thái thông báo và các điều khiển. Khi chế độ Không Làm Phiền đang hoạt động, Dunst giữ các thông báo đến để xử lý sau và ARGVUS đóng bất kỳ cửa sổ pop-up nào đã xuất hiện trên màn hình. Bảng Điều khiển ẩn danh sách thông báo của nó cho đến khi chế độ Không Làm Phiền được tắt. Thay đổi giao diện trì hoãn việc tải lại Dunst cho đến khi chế độ Không Làm Phiền được tắt, vì vậy việc thay đổi giao diện không vô hiệu hóa nó.
+Lịch sử vẫn hiển thị khi bật Không làm phiền. Thông báo được nhóm theo ứng dụng, ban đầu thu gọn với bản xem trước mới nhất. Mở nhóm rồi chọn tiêu đề để đọc toàn bộ nội dung. Có thể xóa một nhóm hoặc toàn bộ lịch sử. Cập nhật giữ nguyên các nhóm đang mở. Cửa sổ rộng 200–340 px, chiều cao linh hoạt tối đa 100 px; hai thông báo có thể xuất hiện cùng chỉ báo số thông báo còn lại. Việc tải lại giao diện vẫn được hoãn khi bật Không làm phiền.

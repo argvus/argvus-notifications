@@ -11,4 +11,4 @@ argvus notifications dnd off
 argvus notifications dnd toggle
 ```
 
-`argvus-session` inicia o serviço de notificações e o Control Panel expõe seu estado. Enquanto o Não Perturbe estiver ativo, o Dunst mantém as notificações recebidas para depois e o ARGVUS fecha os pop-ups que já estiverem na tela. O Control Panel oculta a lista de notificações até o Não Perturbe ser desativado. A troca de tema adia a recarga do Dunst até o Não Perturbe ser desativado, sem desligá-lo.
+O histórico permanece visível durante o Não Perturbe. As notificações são agrupadas por aplicativo, inicialmente recolhidas, com a prévia mais recente. Expanda um grupo para consultar suas mensagens e selecione um título para ler o texto completo. Limpe um grupo ou todo o histórico. As atualizações preservam os grupos abertos. Os avisos usam largura de 200–340 px e altura dinâmica de até 100 px; duas notificações podem aparecer junto ao indicador de excedentes. A recarga do tema continua adiada durante o Não Perturbe.

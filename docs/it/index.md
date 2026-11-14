@@ -11,4 +11,4 @@ argvus notifications dnd on
 argvus notifications dnd off
 argvus notifications dnd toggle
 ```
-Il servizio di notifica è avviato da `argvus-session`; il Pannello di Controllo espone lo stato delle notifiche e i controlli. Quando Non Disturbare è attivo, Dunst conserva le notifiche in arrivo per dopo e ARGVUS chiude eventuali popup già presenti sullo schermo. Il Pannello di Controllo nasconde la sua lista di notifiche fino a quando Non Disturbare non viene disattivato. Le modifiche al tema differiscono il riavvio di Dunst fino a quando Non Disturbare non viene disattivato, quindi cambiare tema non lo disabilita.
+La cronologia resta visibile con Non disturbare. Le notifiche sono raggruppate per applicazione, inizialmente chiuse con l’anteprima più recente. Espandere un gruppo e selezionare un titolo per leggere il testo completo. È possibile cancellare un gruppo o tutta la cronologia. Gli aggiornamenti mantengono i gruppi aperti. Gli avvisi sono larghi 200–340 px e alti fino a 100 px, con altezza dinamica; due notifiche possono affiancare l’indicatore di eccedenza. Il tema viene ancora ricaricato dopo Non disturbare.

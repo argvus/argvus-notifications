@@ -11,4 +11,4 @@ argvus notifications dnd on
 argvus notifications dnd off
 argvus notifications dnd toggle
 ```
-El servicio de notificaciones es iniciado por `argvus-session`; el Panel de Control expone el estado de las notificaciones y sus controles. Mientras No Molestar está activo, Dunst guarda las notificaciones entrantes para más tarde y ARGVUS cierra cualquier ventana emergente ya presente en la pantalla. El Panel de Control oculta su lista de notificaciones hasta que No Molestar se desactiva. Los cambios de tema difieren la recarga de Dunst hasta que No Molestar se apague, por lo que cambiar de tema no lo desactiva.
+El historial permanece visible con No molestar. Las notificaciones se agrupan por aplicación, contraídas inicialmente con la vista previa más reciente. Expanda un grupo y seleccione un título para leer el texto completo. Puede borrar un grupo o todo el historial. Las actualizaciones conservan los grupos abiertos. Los avisos tienen 200–340 px de ancho y altura dinámica hasta 100 px; pueden aparecer dos junto al indicador de avisos adicionales. La recarga del tema sigue aplazada con No molestar.

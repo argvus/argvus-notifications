@@ -13,4 +13,4 @@ argvus notifications dnd off
 argvus notifications dnd toggle
 ```
 
-The notification service is started by `argvus-session`; the Control Panel exposes notification state and controls. While Do Not Disturb is active, Dunst keeps incoming notifications for later and ARGVUS closes any pop-ups already on screen. The Control Panel hides its notification list until Do Not Disturb is turned off. Theme changes defer the Dunst reload until Do Not Disturb is turned off, so changing themes does not disable it.
+Notification history remains visible during Do Not Disturb. Entries are grouped by application and collapsed initially, with the latest preview. Expand a group to browse its messages, then select a title to read the full text. Clear one group or the entire history. Updates preserve expanded groups. Pop-ups use a width of 200–340 px and dynamic height up to 100 px; two notifications can appear alongside the overflow indicator. Theme reload remains deferred during Do Not Disturb.
