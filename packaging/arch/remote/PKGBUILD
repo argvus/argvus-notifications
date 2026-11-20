@@ -12,7 +12,6 @@ depends=(
   'dunst'
   'libnotify'
 )
-optdepends=('rofi: notification action menu')
 options=('!debug')
 source=(
   "${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz"

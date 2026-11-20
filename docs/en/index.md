@@ -14,3 +14,9 @@ argvus notifications dnd toggle
 ```
 
 Notification history remains visible during Do Not Disturb. Entries are grouped by application and collapsed initially, with the latest preview. Expand a group to browse its messages, then select a title to read the full text. Clear one group or the entire history. Updates preserve expanded groups. Pop-ups use a width of 200–340 px and dynamic height up to 100 px; two notifications can appear alongside the overflow indicator. Theme reload remains deferred during Do Not Disturb.
+
+The packaged Dunst configuration opens its action menu with the ARGVUS GTK selector.
+
+```ini
+dmenu = /usr/bin/argvus notification-action-picker
+```

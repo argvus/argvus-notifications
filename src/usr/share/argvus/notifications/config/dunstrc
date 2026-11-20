@@ -62,7 +62,7 @@
     history_length = 20
 
     ### Misc ###
-    dmenu = /usr/bin/rofi -dmenu -p dunst
+    dmenu = /usr/bin/argvus notification-action-picker
     browser = /usr/bin/xdg-open
     always_run_script = true
     title = Dunst

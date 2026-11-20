@@ -12,3 +12,7 @@ argvus notifications dnd on
 argvus notifications dnd off
 argvus notifications dnd toggle
 ```
+
+```ini
+dmenu = /usr/bin/argvus notification-action-picker
+```
