@@ -9,7 +9,7 @@
     width = (200, 340)
     height = (0, 100)
     origin = top-right
-    offset = 16x46          # alinha abaixo da topbar do Waybar
+    offset = 16x46          # alinha abaixo da topbar do Taskbar
     scale = 0
     notification_limit = 3
 
